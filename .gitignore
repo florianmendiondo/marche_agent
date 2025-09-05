@@ -1,0 +1,21 @@
+# Dossiers Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtualenv
+.venv/
+
+# Données locales
+data/
+uploads/
+*.db
+
+# Fichiers secrets
+.env
+
+# Fichiers système Windows/OneDrive
+Thumbs.db
+desktop.ini
+.DS_Store
