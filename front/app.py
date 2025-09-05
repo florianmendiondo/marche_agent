@@ -1,6 +1,9 @@
 import streamlit as st
 import requests
 import time
+import os
+
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 
 # --- Configuration de la page ---
 st.set_page_config(page_title="Agent d'Analyse de Marchés", layout="wide")
@@ -37,9 +40,9 @@ if uploaded_files:
 
             try:
                 response = requests.post(
-                    "http://localhost:8000/upload",
+                    f"{BACKEND_URL}/upload",
                     files=files,
-                    timeout=30  # Timeout pour éviter les blocages
+                    timeout=240  # Timeout pour éviter les blocages
                 )
                 if response.status_code == 200:
                     st.session_state.indexing_status = f"✅ Succès : {len(uploaded_files)} documents indexés."
@@ -71,9 +74,9 @@ if st.button("🔍 Analyser la requête"):
                 st.session_state.analysis_result = "En cours..."
                 try:
                     response = requests.post(
-                        "http://localhost:8000/analyze",
+                        f"{BACKEND_URL}/analyze",
                         json={"query": query},
-                        timeout=30
+                        timeout=240
                     )
                     if response.status_code == 200:
                         st.session_state.analysis_result = response.json()["summary"]
