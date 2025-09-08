@@ -2,8 +2,8 @@ import os
 import re
 import chromadb
 import unicodedata
-from backend.clean_chunk import chunk_text
-from backend.extractors import extract_pdf, extract_docx
+from clean_chunk import chunk_text
+from extractors import extract_pdf, extract_docx
 from mistralai import Mistral, UserMessage
 from typing import List  
 
