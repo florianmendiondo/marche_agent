@@ -6,8 +6,8 @@ from typing import List
 import uvicorn
 
 # --- Import de TES fonctions existantes ---
-from backend.index_data import index_documents  # Ta fonction d'indexation
-from backend.generator_new import generate_from_query  # Ta fonction de génération
+from index_data import index_documents  # Ta fonction d'indexation
+from generator_new import generate_from_query  # Ta fonction de génération
 
 # --- Configuration FastAPI ---
 app = FastAPI()
@@ -51,19 +51,16 @@ async def upload_files(files: List[UploadFile] = File(...)):
 
 @app.post("/analyze")
 async def analyze_query(request: Request):
-    """
-    Endpoint pour analyser une requête utilisateur.
-    """
     try:
         data = await request.json()
-        query = data["query"]
-
-        # --- Appel à TA fonction de génération existante ---
-        result = generate_from_query(query)  # Utilise ta fonction generate_from_query()
+        query = data.get("query")
+        print("Query reçue :", query)  # LOG
+        result = generate_from_query(query)
         return {"status": "success", "summary": result}
     except Exception as e:
+        print("Erreur lors de l'analyse :", e)  # LOG complet
         raise HTTPException(status_code=500, detail=f"Erreur lors de l'analyse : {str(e)}")
-
+    
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
